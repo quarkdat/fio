@@ -95,6 +95,12 @@ endif
 ifdef CONFIG_WINDOWSAIO
   SOURCE += engines/windowsaio.c
 endif
+ifdef CONFIG_SHAKE
+  SOURCE += engines/shake.c
+  SHAKEFLAGS= -I /home/zhu/git/quarkdat/shake/src/lib/
+  CFLAGS += $(SHAKEFLAGS)
+  LIBS += -luv
+endif
 ifdef CONFIG_RBD
   SOURCE += engines/rbd.c
 endif

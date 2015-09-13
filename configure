@@ -1232,6 +1232,11 @@ fi
 echo "IPv6 helpers                  $ipv6"
 
 ##########################################
+# check for shake
+LIBS="-lshake $LIBS"
+shake="yes"
+echo "Shake Block Device engine     $shake"
+##########################################
 # check for rbd
 rbd="no"
 cat > $TMPC << EOF
@@ -1672,6 +1677,9 @@ if test "$pwritev" = "yes" ; then
 fi
 if test "$ipv6" = "yes" ; then
   output_sym "CONFIG_IPV6"
+fi
+if test "$shake" = "yes" ; then
+  output_sym "CONFIG_SHAKE"
 fi
 if test "$rbd" = "yes" ; then
   output_sym "CONFIG_RBD"
