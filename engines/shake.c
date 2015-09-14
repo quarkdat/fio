@@ -184,6 +184,10 @@ static void fio_shake_cleanup(struct thread_data *td)
             free(shake->iocbs);
             shake->iocbs = NULL;
         }
+        if (shake->img) {
+            img_close(shake->img);
+            shake->img = NULL;
+        }
         free(shake);
         td->io_ops->data = NULL;
     }
@@ -219,7 +223,7 @@ static int fio_shake_setup(struct thread_data *td)
     struct img_t *img = img_open(o->shake_image_name, 0, IO_POLL_MODE);
     if (img == NULL) {
         log_err("fio open shake image failed\n");
-        goto close;
+        goto cleanup;
     }
 
 
@@ -246,11 +250,8 @@ static int fio_shake_setup(struct thread_data *td)
 	f->real_file_size = img->size;
 
     shake->img = img;
-    //img_close(img);
 	return 0;
 
-close:
-    //img_close(img);
 cleanup:
     fio_shake_cleanup(td);
     return r;
